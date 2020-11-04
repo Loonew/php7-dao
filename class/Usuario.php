@@ -59,6 +59,52 @@ class Usuario {
 		}
 	}
 
+//por nao usar "$this", podemos fazer dessa função algo estatico
+//a vantagem seria que não seria necessário instanciar um objeto da classe usuário
+//só usar um Usuario::getList para chamar essa função
+//Nisso, não usando um $this usando a memória dentro do escopo, podemos
+//usar a função fora do próprio escopo, pois ela é apenas um comando quen não requisita valores anteriores.
+	public static function getList(){
+
+		$sql = new Sql();
+
+		return $sql->select("SELECT * FROM tb_usuarios ORDER BY login;");
+	}
+
+	public static function search($login){
+
+		$sql = new Sql();
+
+		return $sql->select("SELECT * FROM tb_usuarios WHERE login LIKE :SEARCH ORDER BY login", array(
+				':SEARCH'=>"%".$login."%"
+		));
+	}
+
+	public function login($login, $password){
+
+		$sql = new Sql();
+
+		$results = $sql->select("SELECT * FROM tb_usuarios WHERE login = :LOGIN and senha = :PASSWORD", array(
+			":LOGIN"=>$login,
+			":PASSWORD"=>$password
+		));
+
+		if (count($results) > 0) {
+
+			$row = $results[0];
+
+			$this->setIdusuario($row['idusuario']);
+			$this->setLogin($row['login']);
+			$this->setSenha($row['senha']);
+			$this->setDtcadastro(new DateTime($row['dtcadastro']));
+
+		} else {
+
+			throw new Exception("Login e/ou senha invalidos");
+		
+		}
+	}
+
 	public function __toString(){
 
 		return json_encode(array(
