@@ -32,4 +32,18 @@ $usuario = new Usuario();
 $usuario->login("JooJ", "esqueci");
 echo $usuario;
 */
+
+/*criando um novo usuário
+$aluno = new Usuario("aluno", "senha");
+$aluno->insert();
+echo $aluno;
+*/
+
+$usuario = new Usuario();
+
+$usuario->loadById(11);
+
+$usuario->update("professor", "laal");
+
+echo $usuario;
  ?>
