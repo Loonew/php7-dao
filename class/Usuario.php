@@ -121,7 +121,8 @@ class Usuario {
 		}
 
 	}
-
+//o que a pessoa escreve dentro do update, primeiro o login e depois a senha, será alocado na variavel login
+//e senha com o set. Nisso, o get deles trás esses termos
 	public function update($login, $password) {
 
 		$this->setlogin($login);
@@ -136,6 +137,20 @@ class Usuario {
 
 		));
 
+	}
+
+	public function delete(){
+
+		$sql = new Sql();
+
+		$sql->query("DELETE FROM tb_usuarios WHERE idusuario = :ID", array(
+			':ID'=>$this->getIdusuario()
+		));
+
+		$this->setIdusuario(0);
+		$this->setLogin("");
+		$this->setSenha("");
+		$this->setDtcadastro(new DateTime());
 	}
 
 	public function __construct($login = "", $password = ""){
